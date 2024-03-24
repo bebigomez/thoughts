@@ -19,17 +19,21 @@ app.use(cors());
 app.use(express.json());
 app.use(requestLogger);
 
+app.get("/", (request, response) => {
+  response.send("<h1>Hello World!</h1>");
+});
+
 app.get("/api/thoughts", (request, response) => {
   Thought.find({}).then((thoughts) => {
     response.json(thoughts);
   });
 });
 
-app.get('/api/thoughts/:id', (request, response) => {
-  Thought.findById(request.params.id).then(thought => {
-    response.json(thought)
-  })
-})
+app.get("/api/thoughts/:id", (request, response) => {
+  Thought.findById(request.params.id).then((thought) => {
+    response.json(thought);
+  });
+});
 
 app.post("/api/thoughts", (request, response) => {
   const body = request.body;
@@ -64,7 +68,7 @@ app.patch("/api/thoughts/:id", (request, response) => {
   );
 });
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
