@@ -20,6 +20,7 @@ const thoughtSchema = new mongoose.Schema({
   origin: {
     city: String,
     country: String,
+    countryCode: String,
   },
   likes: Number,
 });

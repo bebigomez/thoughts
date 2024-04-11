@@ -4,6 +4,8 @@ require("dotenv").config();
 
 const Thought = require("./models/thoughts");
 
+app.use(express.static('dist'))
+
 const requestLogger = (request, response, next) => {
   console.log("Method:", request.method);
   console.log("Path:  ", request.path);
@@ -38,6 +40,8 @@ app.get("/api/thoughts/:id", (request, response) => {
 app.post("/api/thoughts", (request, response) => {
   const body = request.body;
 
+  console.log(body)
+
   const thought = new Thought({
     title: body.title,
     body: body.body,
@@ -45,8 +49,9 @@ app.post("/api/thoughts", (request, response) => {
     origin: {
       city: body.origin.city,
       country: body.origin.country,
+      countryCode: body.origin.countryCode,
     },
-    likes: body.likes,
+    likes: 0,
   });
 
   thought.save().then((savedThought) => {
