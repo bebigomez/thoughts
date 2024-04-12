@@ -4,7 +4,7 @@ require("dotenv").config();
 
 const Thought = require("./models/thoughts");
 
-app.use(express.static('dist'))
+app.use(express.static("dist"));
 
 const requestLogger = (request, response, next) => {
   console.log("Method:", request.method);
@@ -40,7 +40,11 @@ app.get("/api/thoughts/:id", (request, response) => {
 app.post("/api/thoughts", (request, response) => {
   const body = request.body;
 
-  console.log(body)
+  if (!body.title || !body.body) {
+    return response
+      .status(400)
+      .json({ error: "Title and body are need to post." });
+  }
 
   const thought = new Thought({
     title: body.title,
@@ -54,9 +58,14 @@ app.post("/api/thoughts", (request, response) => {
     likes: 0,
   });
 
-  thought.save().then((savedThought) => {
-    response.json(savedThought);
-  });
+  thought
+    .save()
+    .then((savedThought) => {
+      response.json(savedThought);
+    })
+    .catch((error) => {
+      response.status(500).json({ error: "There was an error saving post." });
+    });
 });
 
 app.patch("/api/thoughts/:id", (request, response) => {
