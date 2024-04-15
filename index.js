@@ -40,7 +40,7 @@ app.get("/api/thoughts/:id", (request, response) => {
 app.post("/api/thoughts", (request, response) => {
   const body = request.body;
 
-  if (!body.title || !body.body) {
+  if (body.title.trim().length === 0 || body.body.trim().length === 0) {
     return response
       .status(400)
       .json({ error: "Title and body are need to post." });
