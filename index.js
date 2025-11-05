@@ -12,9 +12,19 @@ app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 
+// app.use('/api/thoughts', thoughtsRouter);
+
+// app.use(express.static('dist'))
+
+// rutas API
 app.use('/api/thoughts', thoughtsRouter);
 
-app.use(express.static('dist'))
+app.use(express.static('dist'));
+
+// fallback
+app.get('*', (req, res) => {
+  res.sendFile(__dirname + '/dist/index.html');
+});
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
